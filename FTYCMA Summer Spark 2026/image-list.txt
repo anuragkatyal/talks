@@ -1,0 +1,13 @@
+Doenet Talk — image list for slides.com
+=========================================
+Upload these in slides.com and set as the slide background
+(Slide > Background > Image) on the matching slide.
+
+assets/commute-map.png        -> "The morning commute" map slide
+assets/class-7-45.jpg         -> "This is the 7:45 a.m. class" photo
+assets/class-wide.jpg         -> Part 1 divider (Top-Down View)
+assets/class-notes.jpg        -> Part 2 divider (Pre-Class Prep)
+assets/class-whiteboard.jpg   -> Part 3 divider (In Class)
+assets/class-assessment.jpg   -> Part 4 divider (Assessment)
+assets/class-self-driven.jpg  -> "On the right path — without me" photo
+assets/workshop-group.jpg     -> "The community" group photo (before the invite)

@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finally, Tech You Create, Modify &amp; Adapt — Doenet</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --navy:#16181c;
+  --navy-deep:#0f1013;
+  --navy-demo:#0b0c0d;
+  --ink-line:rgba(222,202,168,.07);
+  --ink-line-strong:rgba(222,202,168,.13);
+  --teal:#f0b54e;
+  --coral:#e9846a;
+  --amber:#f4c46b;
+  --fg:#f1ece3;
+  --fg-soft:#ded6c9;
+  --fg-mute:#9a9488;
+  --card:rgba(28,26,22,.72);
+  --card-line:rgba(222,202,168,.16);
+
+  --type-display:116px;
+  --type-divnum:248px;
+  --type-claim:88px;
+  --type-claim-sm:68px;
+  --type-h2:66px;
+  --type-sub:48px;
+  --type-body:40px;
+  --type-small:32px;
+  --type-kicker:26px;
+
+  --pad-x:130px;
+  --pad-top:96px;
+  --pad-bottom:96px;
+
+  --r:16px;
+}
+
+.reveal{ font-family:"IBM Plex Sans",system-ui,sans-serif; color:var(--fg); background:var(--navy); font-weight:400; -webkit-font-smoothing:antialiased; }
+.reveal ::selection{ background:rgba(240,181,78,.35); }
+
+/* section is reveal-controlled; layout lives in .frame */
+.reveal .slides section{ padding:0; }
+.reveal .frame{
+  position:relative;
+  height:1080px;
+  box-sizing:border-box;
+  padding:var(--pad-top) var(--pad-x) var(--pad-bottom);
+  display:flex; flex-direction:column; justify-content:flex-start;
+  overflow:hidden; text-align:left; isolation:isolate;
+}
+.reveal .frame.center{ justify-content:center; }
+.reveal .frame.bottom{ justify-content:flex-end; }
+
+/* graph-paper grid */
+.reveal .frame::before{
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background-image:
+    linear-gradient(var(--ink-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ink-line) 1px, transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(120% 120% at 70% 30%, #000 55%, transparent 100%);
+          mask-image:radial-gradient(120% 120% at 70% 30%, #000 55%, transparent 100%);
+}
+.reveal .frame.nogrid::before{ display:none; }
+
+/* typography helpers */
+.reveal h1,.reveal h2,.reveal h3{ font-family:"IBM Plex Sans",sans-serif; line-height:1.04; letter-spacing:-.015em; text-wrap:balance; margin:0; color:var(--fg); }
+.reveal p{ margin:0; }
+.reveal strong{ color:#fff; font-weight:600; }
+.reveal em{ font-style:normal; color:var(--teal); }
+.reveal .coral{ color:var(--coral); }
+.reveal .teal{ color:var(--teal); }
+.reveal .amber{ color:var(--amber); }
+
+.kicker{
+  font-family:"IBM Plex Mono",monospace; font-weight:500;
+  font-size:var(--type-kicker); letter-spacing:.26em; text-transform:uppercase;
+  color:var(--teal); display:flex; align-items:center; gap:16px;
+}
+.kicker::before{ content:""; width:42px; height:2px; background:var(--teal); display:inline-block; }
+.kicker.coral{ color:var(--coral); }
+.kicker.coral::before{ background:var(--coral); }
+.kicker.mute{ color:var(--fg-mute); }
+.kicker.mute::before{ background:var(--fg-mute); }
+
+.rule{ width:96px; height:5px; background:var(--teal); border-radius:3px; }
+.rule.coral{ background:var(--coral); }
+
+/* ---- claim slides ---- */
+.frame.claim{ justify-content:center; }
+.frame.claim .kicker{ position:absolute; top:var(--pad-top); left:var(--pad-x); margin:0; }
+.claim-stmt{ font-size:var(--type-claim); font-weight:600; line-height:1.06; max-width:1560px; letter-spacing:-.02em; }
+.claim-stmt.sm{ font-size:var(--type-claim-sm); }
+.support{ font-size:var(--type-body); color:var(--fg-soft); max-width:1180px; line-height:1.4; margin-top:40px; }
+.claim-foot{ margin-top:48px; display:flex; align-items:center; gap:26px; }
+
+/* ---- divider slides ---- */
+.frame.divider{ justify-content:flex-end; }
+.divnum{ font-family:"IBM Plex Sans Condensed",sans-serif; font-weight:700; font-size:var(--type-divnum); line-height:.84; color:transparent; -webkit-text-stroke:2px rgba(222,202,168,.30); letter-spacing:-.02em; position:absolute; top:60px; right:var(--pad-x); z-index:-1; }
+.divtitle{ font-size:152px; font-weight:700; letter-spacing:-.025em; line-height:.98; }
+.divmeta{ font-family:"IBM Plex Mono",monospace; color:var(--fg-mute); font-size:var(--type-small); margin-top:30px; letter-spacing:.04em; }
+
+/* ---- demo slides ---- */
+.frame.demo{ justify-content:center; }
+.demo-kicker{ position:absolute; top:var(--pad-top); left:var(--pad-x); }
+.demo-name{ font-size:130px; font-weight:700; letter-spacing:-.025em; line-height:1.0; max-width:1500px; }
+.demo-sub{ font-family:"IBM Plex Mono",monospace; color:var(--fg-mute); font-size:var(--type-small); margin-top:34px; letter-spacing:.05em; }
+.demo-underline{ height:6px; width:340px; background:var(--coral); border-radius:3px; margin-top:46px; }
+
+/* ---- stat slides ---- */
+.stat-num{ font-family:"IBM Plex Sans Condensed",sans-serif; font-weight:700; letter-spacing:-.03em; line-height:.9; }
+
+/* ---- quote ---- */
+.bigquote{ font-size:84px; font-weight:600; line-height:1.1; letter-spacing:-.02em; max-width:1620px; text-wrap:balance; }
+.bigquote .qm{ color:var(--coral); }
+.attrib{ font-family:"IBM Plex Mono",monospace; color:var(--fg-mute); font-size:var(--type-small); margin-top:54px; letter-spacing:.06em; }
+
+/* ---- title slide ---- */
+.frame.title{ justify-content:center; }
+.pretitle{ font-family:"IBM Plex Mono",monospace; font-size:30px; letter-spacing:.42em; text-transform:uppercase; color:var(--coral); margin-bottom:34px; }
+.maintitle{ font-size:var(--type-display); font-weight:700; letter-spacing:-.03em; line-height:1.0; }
+.subtitle{ font-size:var(--type-sub); color:var(--fg-soft); margin-top:34px; font-weight:400; letter-spacing:-.01em; }
+.byline{ font-family:"IBM Plex Mono",monospace; font-size:30px; color:var(--fg-mute); margin-top:64px; display:flex; gap:20px; align-items:center; letter-spacing:.04em; flex-wrap:wrap; }
+.byline .dot{ width:7px; height:7px; border-radius:50%; background:var(--teal); }
+
+/* story slides */
+.story{ font-size:78px; font-weight:600; line-height:1.12; letter-spacing:-.02em; max-width:1560px; text-wrap:balance; }
+.story.sm{ font-size:60px; }
+
+/* surface pair */
+.surface-line{ font-size:62px; font-weight:600; line-height:1.14; max-width:1500px; letter-spacing:-.02em; margin-top:36px; }
+.surf-list{ list-style:none; margin:0; padding:0; font-weight:600; letter-spacing:-.01em; max-width:1500px; }
+.surf-list > li{ position:relative; font-size:62px; line-height:1.18; padding-left:54px; }
+.surf-list > li + li{ margin-top:30px; }
+.surf-list > li::before{ content:""; position:absolute; left:0; top:.4em; width:20px; height:20px; border-radius:50%; background:var(--teal); }
+.surf-list.dots-coral > li::before{ background:var(--coral); }
+.surf-list ul{ list-style:none; margin:22px 0 4px; padding:0; }
+.surf-list ul li{ position:relative; font-size:42px; font-weight:500; color:var(--fg-soft); line-height:1.3; padding-left:48px; }
+.surf-list ul li + li{ margin-top:14px; }
+.surf-list ul li::before{ content:""; position:absolute; left:4px; top:.55em; width:22px; height:3px; border-radius:2px; background:var(--coral); }
+
+/* ---- map slide ---- */
+.map-wrap{ display:grid; grid-template-columns:minmax(0,1fr) 780px; gap:84px; height:100%; align-items:center; }
+.map-figure{ display:flex; flex-direction:column; align-items:center; gap:18px; min-width:0; }
+.map-figure img{ max-height:872px; max-width:100%; object-fit:contain; border-radius:14px; border:1px solid var(--card-line); box-shadow:0 30px 80px rgba(0,0,0,.5); }
+.map-cap{ font-family:"IBM Plex Mono",monospace; font-size:25px; color:var(--fg-mute); letter-spacing:.04em; }
+.map-panel h2{ font-size:var(--type-h2); font-weight:700; margin:18px 0 14px; }
+.legs{ list-style:none; margin:30px 0 0; padding:0; }
+.legs li{ display:grid; grid-template-columns:54px 1fr auto; align-items:center; gap:22px; padding:22px 4px; border-bottom:1px solid var(--ink-line-strong); }
+.legs .lx{ font-family:"IBM Plex Mono",monospace; font-size:26px; color:var(--teal); }
+.legs .ll{ font-size:35px; font-weight:500; color:var(--fg); line-height:1.2; }
+.legs .ll small{ display:block; font-family:"IBM Plex Mono",monospace; font-size:24px; color:var(--fg-mute); font-weight:400; letter-spacing:.03em; margin-top:4px; }
+.legs .lt{ font-family:"IBM Plex Mono",monospace; font-size:30px; color:var(--fg-soft); white-space:nowrap; }
+.total{ margin-top:32px; display:flex; align-items:baseline; gap:24px; flex-wrap:wrap; }
+.total .big{ font-family:"IBM Plex Sans Condensed",sans-serif; font-weight:700; font-size:88px; line-height:1; color:var(--coral); letter-spacing:-.02em; }
+.total .small{ font-family:"IBM Plex Mono",monospace; font-size:28px; color:var(--fg-soft); letter-spacing:.04em; }
+
+/* activity slide */
+.act-wrap{ display:grid; grid-template-columns:minmax(0,1fr) var(--demo-text-w,440px); gap:64px; height:100%; align-items:center; }
+.act-left h2{ font-size:78px; font-weight:700; letter-spacing:-.02em; line-height:1.02; }
+.act-steps{ list-style:none; margin:38px 0 0; padding:0; display:flex; flex-direction:column; gap:22px; }
+.act-steps li{ font-size:36px; color:var(--fg-soft); display:flex; gap:18px; align-items:flex-start; line-height:1.3; }
+.act-steps li b{ font-family:"IBM Plex Mono",monospace; color:var(--teal); font-weight:600; }
+.act-url{ display:none !important; margin-top:42px; font-family:"IBM Plex Mono",monospace; font-size:30px; color:var(--fg); background:var(--card); border:1px solid var(--card-line); border-radius:12px; padding:18px 24px; display:inline-flex; gap:16px; align-items:center; }
+.act-url .lbl{ color:var(--coral); }
+.timer-chip{ margin-top:30px; display:inline-flex; align-items:center; gap:14px; font-family:"IBM Plex Mono",monospace; font-size:32px; color:var(--amber); border:1px solid rgba(244,196,107,.4); border-radius:999px; padding:12px 26px; }
+.act-frame{ order:-1; height:var(--embed-h,1010px); border-radius:18px; overflow:hidden; border:1px solid var(--card-line); box-shadow:0 30px 80px rgba(0,0,0,.5); background:#111114; position:relative; }
+.act-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; z-index:1; }
+.act-frame .ph{ position:absolute; inset:0; pointer-events:none; z-index:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; color:var(--fg-mute); font-family:"IBM Plex Mono",monospace; font-size:28px; text-align:center; padding:40px; }
+
+/* route deco */
+.deco-route{ position:absolute; z-index:-1; opacity:.9; }
+
+/* lists in claims (rare) */
+.minilist{ list-style:none; margin:26px 0 0; padding:0; display:flex; gap:44px; flex-wrap:wrap; }
+.minilist li{ font-size:30px; color:var(--fg-soft); display:flex; gap:14px; align-items:center; }
+.minilist .tag{ font-family:"IBM Plex Mono",monospace; color:var(--teal); font-size:26px; }
+
+/* vs block */
+.vs{ display:grid; grid-template-columns:1fr auto 1fr; gap:54px; align-items:center; margin-top:54px; max-width:1500px; }
+.vs .cell{ background:var(--card); border:1px solid var(--card-line); border-radius:var(--r); padding:40px 44px; }
+.vs .cell h3{ font-size:46px; font-weight:700; letter-spacing:-.01em; }
+.vs .cell p{ font-family:"IBM Plex Mono",monospace; font-size:28px; color:var(--fg-mute); margin-top:14px; line-height:1.4; }
+.vs .mid{ font-family:"IBM Plex Mono",monospace; font-size:30px; color:var(--coral); }
+
+/* slide number + controls tint */
+.reveal .slide-number{ font-family:"IBM Plex Mono",monospace; background:transparent; color:var(--fg-mute); font-size:18px; right:24px; bottom:18px; letter-spacing:.1em; }
+.reveal .controls{ color:var(--teal); }
+.reveal .progress{ color:var(--teal); height:4px; }
+.reveal .progress span{ background:linear-gradient(90deg,var(--teal),var(--coral)); }
+
+/* fragment current-emphasis for legs */
+.legs li.fragment{ opacity:.18; }
+.legs li.fragment.visible{ opacity:1; }
+
+/* ---------- photo slide treatments ---------- */
+.reveal .frame.photo .scrim{ position:absolute; inset:0; z-index:-1; background:linear-gradient(to top, rgba(11,10,9,.94) 0%, rgba(11,10,9,.74) 26%, rgba(11,10,9,.42) 52%, rgba(11,10,9,.28) 100%); }
+.reveal .frame.divider.photo .divnum{ -webkit-text-stroke-color:rgba(245,238,228,.34); }
+.reveal .frame.photo .divtitle,
+.reveal .frame.photo .story,
+.reveal .frame.photo .divmeta,
+.reveal .frame.photo .support{ text-shadow:0 2px 34px rgba(0,0,0,.6); }
+
+/* ---------- entrance choreography (plays when a slide becomes current; import-safe CSS) ---------- */
+@keyframes scUp{ from{opacity:0; transform:translateY(22px)} to{opacity:1; transform:none} }
+@keyframes scLeft{ from{opacity:0; transform:translateX(-26px)} to{opacity:1; transform:none} }
+@keyframes scGrowX{ from{transform:scaleX(0)} to{transform:scaleX(1)} }
+@keyframes scFade{ from{opacity:0} to{opacity:1} }
+@keyframes scPop{ from{opacity:0; transform:translateY(26px) scale(.965)} to{opacity:1; transform:none} }
+@keyframes scNum{ from{opacity:0; transform:translateX(46px)} to{opacity:1; transform:none} }
+@keyframes scDraw{ to{ stroke-dashoffset:0 } }
+
+.reveal section.present:not([data-auto-animate]) .kicker{ animation:scLeft .55s both cubic-bezier(.2,.7,.2,1); }
+.reveal section.present:not([data-auto-animate]) .kicker::before{ animation:scGrowX .5s .05s both cubic-bezier(.2,.7,.2,1); transform-origin:left center; }
+.reveal section.present:not([data-auto-animate]) .pretitle{ animation:scFade .55s both; }
+.reveal section.present:not([data-auto-animate]) .maintitle,
+.reveal section.present:not([data-auto-animate]) .story,
+.reveal section.present:not([data-auto-animate]) .divtitle,
+.reveal section.present:not([data-auto-animate]) .claim-stmt,
+.reveal section.present:not([data-auto-animate]) .demo-name,
+.reveal section.present:not([data-auto-animate]) .bigquote,
+.reveal section.present:not([data-auto-animate]) h2{ animation:scUp .7s .08s both cubic-bezier(.2,.7,.2,1); }
+.reveal section.present:not([data-auto-animate]) .subtitle,
+.reveal section.present:not([data-auto-animate]) .byline,
+.reveal section.present:not([data-auto-animate]) .divmeta,
+.reveal section.present:not([data-auto-animate]) .attrib,
+.reveal section.present:not([data-auto-animate]) .demo-sub{ animation:scUp .6s .28s both cubic-bezier(.2,.7,.2,1); }
+.reveal section.present:not([data-auto-animate]) .rule{ animation:scGrowX .55s .24s both cubic-bezier(.2,.7,.2,1); transform-origin:left center; }
+.reveal section.present:not([data-auto-animate]) .divnum{ animation:scNum .9s .05s both cubic-bezier(.2,.7,.2,1); }
+.reveal section.present:not([data-auto-animate]) .stat-num{ animation:scPop .75s .06s both cubic-bezier(.2,.7,.2,1); }
+.reveal section.present .deco-route polyline{ stroke-dasharray:3200; stroke-dashoffset:3200; animation:scDraw 1.5s .12s both ease-out; }
+.reveal section.present .deco-route circle{ animation:scFade .5s .9s both; }
+.reveal .demo-underline.visible{ animation:scGrowX .6s both cubic-bezier(.2,.7,.2,1); transform-origin:left center; }
+
+@media (prefers-reduced-motion: reduce){
+  .reveal section.present *{ animation-duration:.001s !important; animation-delay:0s !important; }
+  .reveal section.present .deco-route polyline{ stroke-dashoffset:0 !important; }
+}
+
+/* ---- combined two-belief slides ---- */
+.frame.combo{ justify-content:center; }
+.frame.combo .kicker{ position:absolute; top:var(--pad-top); left:var(--pad-x); margin:0; }
+.belief-pair{ display:flex; flex-direction:column; gap:60px; max-width:1660px; }
+.bp-item{ display:grid; grid-template-columns:120px 1fr; gap:40px; align-items:start; }
+.bp-num{ font-family:"IBM Plex Sans Condensed",sans-serif; font-weight:700; font-size:84px; line-height:.82; color:var(--teal); letter-spacing:-.02em; }
+.bp-num.coral{ color:var(--coral); }
+.bp-stmt{ font-size:54px; font-weight:600; line-height:1.08; letter-spacing:-.02em; color:var(--fg); }
+.bp-stmt em{ font-style:normal; color:var(--teal); }
+.bp-sub{ font-size:30px; color:var(--fg-soft); margin-top:14px; line-height:1.36; max-width:1180px; }
+.belief-pair.tri{ gap:42px; }
+.belief-pair.tri .bp-item{ grid-template-columns:104px 1fr; gap:34px; }
+.belief-pair.tri .bp-num{ font-size:66px; }
+.belief-pair.tri .bp-stmt{ font-size:46px; }
+.belief-pair.tri .bp-sub{ font-size:27px; margin-top:10px; }
+.belief-pair.six{ gap:30px; max-width:1680px; }
+.belief-pair.six .bp-item{ grid-template-columns:96px 1fr; gap:30px; align-items:center; }
+.belief-pair.six .bp-num{ font-size:58px; }
+.belief-pair.six .bp-stmt{ font-size:42px; line-height:1.1; }
+.reveal section.present:not([data-auto-animate]) .bp-num{ animation:scPop .7s .06s both cubic-bezier(.2,.7,.2,1); }
+
+/* ---- spruce: Ken Burns on full-bleed photo backgrounds ---- */
+@keyframes kenburns{ from{ transform:scale(1.002); } to{ transform:scale(1.085); } }
+.reveal .slide-background.present .slide-background-content{ animation:kenburns 17s ease-out both; transform-origin:50% 42%; }
+
+/* ---- spruce: commute accumulation meter ---- */
+.commute-track{ height:6px; border-radius:3px; background:rgba(222,202,168,.12); margin-top:30px; overflow:hidden; max-width:760px; }
+.commute-fill{ height:100%; width:0; border-radius:3px; background:linear-gradient(90deg,var(--teal),var(--coral)); transition:width .7s cubic-bezier(.2,.7,.2,1); }
+
+/* ---- spruce: section wayfinder rail ---- */
+#part-rail{ position:absolute; left:36px; bottom:30px; z-index:40; display:flex; flex-direction:column; gap:10px; opacity:0; transform:translateY(6px); transition:opacity .45s, transform .45s; pointer-events:none; }
+#part-rail.show{ opacity:1; transform:none; }
+#part-rail .pr-cells{ display:flex; gap:7px; }
+#part-rail .pr-cells span{ width:40px; height:4px; border-radius:2px; background:rgba(222,202,168,.18); transition:background .45s, transform .45s; transform-origin:center; }
+#part-rail .pr-cells span.done{ background:rgba(240,181,78,.5); }
+#part-rail .pr-cells span.active{ background:var(--teal); transform:scaleY(2); }
+#part-rail .pr-label{ font-family:"IBM Plex Mono",monospace; font-size:16px; letter-spacing:.18em; color:var(--fg-mute); text-transform:uppercase; }
+
+/* ---- spruce: live timer states ---- */
+.timer-chip{ cursor:pointer; user-select:none; transition:color .3s, border-color .3s, background .3s; }
+.timer-chip.warn{ color:var(--coral); border-color:rgba(233,132,106,.65); }
+.timer-chip.done{ color:#fff; background:var(--coral); border-color:var(--coral); }
+.deco-auto{ position:absolute; z-index:-1; opacity:.85; pointer-events:none; }
+.reveal section.present .deco-auto polyline{ stroke-dasharray:640; stroke-dashoffset:640; animation:scDraw 1.3s .12s both ease-out; }
+.reveal section.present .deco-auto circle{ animation:scFade .5s .85s both; }
+@keyframes evIn{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:translateY(0); } }
+.support .ev-delay{ opacity:0; }
+.support.fragment.visible .ev-delay{ animation:evIn .65s 1.7s both cubic-bezier(.2,.7,.2,1); }
+.seg-list{ list-style:none; margin:48px 0 0; padding:0; display:flex; flex-direction:column; gap:24px; max-width:1300px; }
+.seg-list li{ display:flex; align-items:center; gap:28px; font-size:48px; font-weight:500; color:var(--fg-soft); opacity:0; transform:translateY(18px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+.seg-list li.in{ opacity:1; transform:none; }
+.seg-list .seg-dot{ width:15px; height:15px; border-radius:50%; background:var(--teal); flex:none; }
+.seg-list .seg-t{ margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:30px; color:var(--fg-mute); }
+</style>
+</head>
+<body>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+  <rect width="100" height="100" rx="18" fill="#16181c"/>
+  <g stroke="#26282d" stroke-width="0.8">
+    <line x1="0" y1="38" x2="100" y2="38"/><line x1="0" y1="62" x2="100" y2="62"/>
+    <line x1="38" y1="0" x2="38" y2="100"/><line x1="62" y1="0" x2="62" y2="100"/>
+  </g>
+  <polyline points="26,70 42,52 56,58 74,30" fill="none" stroke="#f0b54e" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="26" cy="70" r="4.5" fill="#f0b54e"/>
+  <circle cx="74" cy="30" r="4.5" fill="#e9846a"/>
+</svg>
+</template>
+<div class="reveal">
+<div class="slides">
+
+<!-- ===================== ACT 0 — THE COMMUTE ===================== -->
+
+<section class="stack">
+
+<section data-background-color="#0f1013" data-transition="zoom">
+  <div class="frame center nogrid">
+    <svg class="deco-route" style="top:120px;left:130px;width:520px;height:300px" viewBox="0 0 520 300" fill="none">
+      <polyline points="10,250 130,250 130,150 300,150 300,60 510,60" stroke="rgba(222,202,168,.36)" stroke-width="3"/>
+      <circle cx="10" cy="250" r="9" fill="#f0b54e"/><circle cx="510" cy="60" r="9" fill="#e9846a"/>
+    </svg>
+    <div class="kicker mute">STORYTIME</div>
+    <h1 class="story" style="margin-top:40px"> Mikaela and Juan</h1>
+  </div>
+  <aside class="notes">(~0:00) Open quiet. Don't reveal who the students are yet — let the room sit with it. Energy low and warm.</aside>
+</section>
+
+<section data-background-color="#0f1013">
+  <div class="frame center">
+    <div class="kicker mute">The barrier</div>
+    <h2 class="story sm" style="margin-top:40px">Intermediate Algebra, Sp 2018.
+Publisher access code.
+Couldn't pay for it.</h2>
+    <p class="support fragment fade-up" style="margin-top: 46px; font-size: 46px; color: rgb(241, 236, 227)">This was their morning. 
+<br><span style="display:inline-block; margin-top:22px; font-size:104px; line-height:1; font-weight:600; color: var(--teal)" class="ev-delay">Everyday.</span>
+</p>
+  </div>
+  <aside class="notes">(~0:40) Name the everyday barrier: paywalled homework platforms — many in the room will recognize it. Then the turn ("so this was their morning") and advance into the map, revealing each leg slowly.</aside>
+</section>
+
+<!-- map step-reveal -->
+<section data-background-color="#131519">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="map-wrap">
+      <div class="map-figure">
+        <img src="assets/commute-map.png" alt="Public-transit route from home to the Boca Raton campus">
+        <span class="map-cap">Home (Wellington area) → Boca Raton campus</span>
+      </div>
+      <div class="map-panel">
+        <div class="kicker coral">Home → Campus · every day</div>
+        <h2>The morning commute</h2>
+        <ol class="legs" id="commute-legs">
+          <li class="fragment fade-up" data-min="10"><span class="lx">01</span><span class="ll">Walk<small>Home → bus stop · 0.4 mi</small></span><span class="lt">10 min</span></li>
+          <li class="fragment fade-up" data-min="66"><span class="lx">02</span><span class="ll">Bus<small>→ Tri-Rail station · 24 stops</small></span><span class="lt">1h 06m</span></li>
+          <li class="fragment fade-up" data-min="32"><span class="lx">03</span><span class="ll">Tri-Rail<small>→ Boca Raton · 4 stops</small></span><span class="lt">32 min</span></li>
+          <li class="fragment fade-up" data-min="26"><span class="lx">04</span><span class="ll">Walk<small>Tri-Rail → campus · 1.2 mi</small></span><span class="lt">26 min</span></li>
+        </ol>
+        <div class="commute-track"><div class="commute-fill" id="commute-fill"></div></div>
+        <div class="total">
+          <span class="big" id="commute-big">≈ 2h 14m</span>
+          <span class="small">each way &nbsp;·&nbsp; <span class="coral">class started at 7:45 AM</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~1:30–3:30) Reveal one leg at a time; let the time add up. Pause before the total. The map's own labels show some mornings stretched past 2h 45m. Point out: this is before a single equation.</aside>
+</section>
+
+<section data-background-color="#0f1013">
+  <div class="frame center">
+    <div class="kicker coral">Do the math</div>
+    <h2 class="story" style="margin-top:40px">Two hours. Each way.
+For a class whose book
+they couldn't buy.
+</h2>
+  </div>
+  <aside class="notes">(~3:30) Land it plainly. No drama needed — the numbers do the work.</aside>
+</section>
+
+<section data-background-color="#0f1013">
+  <div class="frame center">
+    <div class="kicker mute">Why I'm here</div>
+    <h2 class="story sm" style="margin-top: 40px; font-size: 78px; color: rgb(241, 236, 227)">It is difficult to forget what that education <em>cost</em> —</h2>
+    <ul class="seg-list" data-autolist>
+      <li><span class="seg-dot"></span>in dollars</li>
+      <li><span class="seg-dot"></span>in hours on a bus</li>
+      <li><span class="seg-dot"></span>on a train</li>
+      <li><span class="seg-dot"></span>on foot</li>
+      <li><span class="seg-dot"></span>in sweltering heat</li>
+      <li><span class="seg-dot"></span>in heavy rain</li>
+    </ul>
+  </div>
+  <aside class="notes">(~4:00) OPTIONAL personal reveal — those two students were me and a friend. Reveal only if you're comfortable; it lands hard. Then advance to title.</aside>
+</section>
+
+</section>
+
+<!-- ===================== ACT 1 — TITLE ===================== -->
+
+<section class="stack">
+
+<section data-background-color="#16181c" data-transition="zoom">
+  <div class="frame title">
+    <svg class="deco-route" style="bottom:90px;left:130px;width:1660px;height:120px" viewBox="0 0 1660 120" fill="none">
+      <polyline points="0,90 280,90 360,30 720,30 800,90 1660,90" stroke="rgba(222,202,168,.4)" stroke-width="3"/>
+      <circle cx="0" cy="90" r="8" fill="#f0b54e"/>
+      <circle cx="360" cy="30" r="6" fill="#e9846a"/>
+      <circle cx="800" cy="90" r="6" fill="#e9846a"/>
+      <circle cx="1660" cy="90" r="8" fill="#e9846a"/>
+    </svg>
+    <div class="pretitle">Finally,</div>
+    <h1 class="maintitle">Tech You <span class="teal">Create</span>,<br><span class="teal">Modify</span> &amp; <span class="teal">Adapt</span></h1>
+    <p class="subtitle">Free, open-source math activities with <strong>Doenet</strong></p>
+    <div class="byline">
+      <span>Anurag Katyal</span><span class="dot"></span>
+      <span>Palm Beach State College</span><span class="dot"></span>
+      <span>www.PiTimesPi.com</span>
+    </div>
+  </div>
+  <aside class="notes">(~4:30) Title. Read the title slowly — "create, modify, adapt" is the whole thesis. Thank the room for being here.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame center">
+    <div class="kicker">Hello</div>
+    <h2 class="story sm" style="margin-top:40px">I'm <span class="teal">Anurag Katyal</span>, and I teach<br>mathematics at <strong>Palm Beach State College.</strong></h2>
+    <p class="support" style="margin-top: 44px; font-size: 30px">Thank you for being here — genuinely. Let's talk about math, the problems with math education, and the people who try to fix them.
+
+By the end of the talk, hopefully it will include you as well :)</p>
+  </div>
+  <aside class="notes">(~5:00) Quick, warm. Replace the name. One sentence on your course (intermediate algebra) is plenty.</aside>
+</section>
+
+<!-- ===================== ACT 2 — TWO LEVELS ===================== -->
+
+<section data-background-color="#16181c" data-auto-animate>
+  <div class="frame" style="height: 1080px">
+    <div class="kicker" data-id="lvl-k">On the surface</div>
+    <ul class="surf-list" data-id="lvl-line" style="margin-top:auto;margin-bottom:auto"><li>Old Int. Alg. → Doenet → <em>New Int. Alg.</em></li>
+      <li>Better than 
+<ul>
+          <li>other platforms</li>
+          <li>paper-and-pencil worksheets</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <aside class="notes">(~5:40) The literal subject. Keep it brief — it's the setup for the turn on the next slide.</aside>
+</section>
+
+<section data-background-color="#16181c" data-auto-animate>
+  <div class="frame">
+    <div class="kicker coral" data-id="lvl-k">Underneath the surface</div>
+    <ul class="surf-list dots-coral" data-id="lvl-line" style="margin-top:auto;margin-bottom:auto">
+      <li>Free and Open-Source Content</li>
+      <li>Community <span style="color:var(--coral); font-size:.82em">♥</span></li>
+    </ul>
+  </div>
+  <aside class="notes">(~6:20) The real subject. The kicker auto-animates from teal to coral — let that land. This is the emotional thesis you'll return to at the end.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap" style="height: 1050px">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Something New, Perhaps</h2>
+        <div class="act-url"><span class="lbl">open →</span> beta.doenet.org/activityViewer/iC6ThGpag47s9XiBWT13fp</div>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/iC6ThGpag47s9XiBWT13fp" title="Live demo activity" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Live demo — a new activity for the audience. The viewer is embedded on the right; the URL is the backup if the room's network is fussy.</aside>
+</section>
+
+</section>
+
+<!-- ===================== ACT 3 — THE AUDIENCE ACTIVITY ===================== -->
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Your turn</div>
+        <h2 style="margin-top:22px">A Tale of<br>Two Squares</h2>
+        <ul class="act-steps">
+          <li><b>01</b><span>Work it exactly like a student would.</span></li>
+          <li><b>02</b><span>No talking it out — type your reasoning, step by step.</span></li>
+          <li><b>03</b><span>Submit each step. Notice where it makes you stop and think.</span></li>
+        </ul>
+        <div class="timer-chip">TIME LIMIT · 7:00</div>
+        <div class="act-url"><span class="lbl">open →</span> beta.doenet.org/code/239701</div>
+      </div>
+      <div class="act-frame">
+        <img src="assets/tale-two-squares.png" alt="A Tale of Two Squares — Doenet activity" style="width:100%; height:100%; object-fit:contain; background:#fff; display:block">
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~6:40–14:00) Hand the room the activity. 7 minutes on the clock. Walk around. Resist the urge to help — the point is for them to feel the productive struggle you'll talk about next. The embedded activity is live; the URL is the backup if the room's network is fussy.</aside>
+</section>
+
+<!-- full-bleed: the real class (callback to 7:45 AM) -->
+<section data-background-image="assets/class-7-45.jpg" data-background-size="cover" data-background-position="center" data-background-color="#0b0c0d" data-transition="zoom">
+  <div class="frame bottom photo nogrid" style="padding-bottom:88px">
+    <div class="scrim"></div>
+    <h2 class="story sm" style="margin-top:20px;max-width:1480px">Everything I show you traces back to a handful of things I believe about <em>teaching.</em></h2>
+  </div>
+  <aside class="notes">(~14:15) A real photo of the class. Quiet callback to the 7:45 AM from the opening commute — these are the students all of this is for. Let it breathe a beat before the beliefs.</aside>
+</section>
+
+<!-- ===================== PART 1 — TOP-DOWN VIEW ===================== -->
+
+<section class="stack">
+<section data-background-color="#0b0c0d" data-background-image="assets/class-wide.jpg" data-background-size="cover" data-background-position="center" data-transition="zoom" data-background-transition="zoom">
+  <div class="frame divider photo nogrid">
+    <div class="scrim"></div>
+    <div class="divnum">01</div>
+    <div class="kicker coral">Part one</div>
+    <h2 class="divtitle">Top-Down<br>View</h2>
+    <div class="divmeta">Seven beliefs · the big picture</div>
+  </div>
+  <aside class="notes">(~14:30) The philosophy from 30,000 feet — the why before the how.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame combo">
+    <div class="kicker">Beliefs 01 – 06 / 20</div>
+    <div class="belief-pair six">
+      <div class="bp-item">
+        <div class="bp-num">01</div>
+        <div class="bp-body"><h2 class="bp-stmt">Free and open source is <em>better.</em></h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num coral">02</div>
+        <div class="bp-body"><h2 class="bp-stmt">Forced adoption of paid solutions is <span class="coral">bad.</span></h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num">03</div>
+        <div class="bp-body"><h2 class="bp-stmt">Productive struggle is <em>necessary.</em></h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num coral">04</div>
+        <div class="bp-body"><h2 class="bp-stmt">Working in groups is <span class="coral">ideal.</span></h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num">05</div>
+        <div class="bp-body"><h2 class="bp-stmt">I want to talk less — and <em>hold the marker less.</em></h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num coral">06</div>
+        <div class="bp-body"><h2 class="bp-stmt">I don't answer until I see correct notation on the whiteboard.</h2></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~14:50) The big-picture beliefs, alternating: FOSS is better; mandated paid platforms are bad (callback to the access-code barrier); productive struggle is the work; groups make math less lonely; I talk less and hold the marker less; and I don't answer until I see correct notation on the whiteboard.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame claim">
+    <div class="kicker">Belief 07 / 20</div>
+    <h2 class="claim-stmt">Students need to be precise : An equation is not an expression.</h2>
+    <div class="vs">
+      <div class="cell"><h3 class="teal">2x + 5</h3><p>expression · nothing to solve</p></div>
+      <div class="mid">≠</div>
+      <div class="cell"><h3 class="coral">2x + 5 = 11</h3><p>equation · “for which x?”</p></div>
+    </div>
+  </div>
+  <aside class="notes">(~17:30) Concrete the abstraction. Sloppy language becomes sloppy math. The words carry as much weight as the symbols.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Hi Sally!</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/m1xrtRcaUCB6yAMbSpnFY6" title="Hi Sally! — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~18:00) Placeholder — open a live Doenet activity that demonstrates one of the beliefs above (notation, or equation vs expression). Replace the name when you pick one.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Korean BBQ</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/hT6BqT2zm2pEEkpKXGaPQD" title="Korean BBQ — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~19:00) Second placeholder for this section. Keep demos short — show one mechanic, then move on.</aside>
+</section>
+
+<!-- ===================== PART 2 — PRE-CLASS PREP ===================== -->
+
+</section>
+
+<section class="stack">
+<section data-background-color="#0b0c0d" data-background-image="assets/class-notes.jpg" data-background-size="cover" data-background-position="center" data-transition="zoom" data-background-transition="zoom">
+  <div class="frame divider photo nogrid">
+    <div class="scrim"></div>
+    <div class="divnum">02</div>
+    <div class="kicker coral">Part two</div>
+    <h2 class="divtitle">Pre-Class<br>Prep</h2>
+    <div class="divmeta">Three beliefs · before they walk in</div>
+  </div>
+  <aside class="notes">(~20:00) Shift to the work students do before class — the homework problem, reframed.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame combo">
+    <div class="kicker">Beliefs 08 – 10 / 20</div>
+    <div class="belief-pair tri">
+      <div class="bp-item">
+        <div class="bp-num">08</div>
+        <div class="bp-body"><h2 class="bp-stmt">Nothing at this level is truly AI-proof. The goal is to make cheating <em>more annoying</em> than just doing the work.</h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num coral">09</div>
+        <div class="bp-body"><h2 class="bp-stmt">You shouldn't move on until the <span class="coral">intermediate step</span> is right.</h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num">10</div>
+        <div class="bp-body"><h2 class="bp-stmt">Ideas should reappear in <em>unexpected ways.</em></h2></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~20:30) Pre-class prep, three beliefs. Nothing is AI-proof — make cheating more annoying than doing the work; you shouldn't move on until the intermediate step is right (Cascade gates this); and ideas should reappear in unexpected ways, interleaved.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Solving Radical Equations</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/16Et8nyqkRzKT6mDL5scDK" title="Solving Radical Equations — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~22:00) Show how each step gates the next — belief 09 in action. Let them watch a wrong step refuse to advance.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Grid Sum Pro</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/pt5xP4pMcZxAfxfnsT9efZ" title="Grid Sum Pro Max — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~23:00) Quick demo. Point out the randomization — everyone's grid is different.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Grid Sum Pro Max</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/5KhiqDKBTjKmk6vvuheC4B" title="Parsons — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~24:00) A Parsons problem: the steps are right but scrambled. Tests sequence, not arithmetic.</aside>
+</section>
+
+<!-- ===================== PART 3 — IN CLASS ===================== -->
+
+</section>
+
+<section class="stack">
+<section data-background-color="#0b0c0d" data-background-image="assets/class-whiteboard.jpg" data-background-size="cover" data-background-position="center" data-transition="zoom" data-background-transition="zoom">
+  <div class="frame divider photo nogrid">
+    <div class="scrim"></div>
+    <div class="divnum">03</div>
+    <div class="kicker coral">Part three</div>
+    <h2 class="divtitle">In Class</h2>
+    <div class="divmeta">Seven beliefs · in the room</div>
+  </div>
+  <aside class="notes">(~25:00) The biggest section — what actually happens during the 50 minutes together.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame combo">
+    <div class="kicker">Beliefs 11 – 15 / 20</div>
+    <div class="belief-pair six">
+      <div class="bp-item">
+        <div class="bp-num">11</div>
+        <div class="bp-body"><h2 class="bp-stmt">Whenever possible, discovery ought to happen before vocabulary.</h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num coral">12</div>
+        <div class="bp-body"><h2 class="bp-stmt">Taking notes is good — so it ought to be costly not to.</h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num">13</div>
+        <div class="bp-body"><h2 class="bp-stmt">Everyone getting a <em>different problem</em> is good.</h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num coral">14</div>
+        <div class="bp-body"><h2 class="bp-stmt">Hiding things in plain sight. </h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num">15</div>
+        <div class="bp-body"><h2 class="bp-stmt">Worksheets put students to sleep — and they're still <em>necessary.</em></h2></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~25:30) The in-class beliefs, alternating: discovery before vocabulary; make notes costly not to take (Pretzels next); everyone gets a different problem; hide the familiar in plain sight; and worksheets are sleep-inducing but necessary — so disguise the drill.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Circuit training</div>
+        <h2 style="margin-top:22px">Circuit</h2>
+        <p class="demo-sub">by Vicki Carter, 2019</p>
+      </div>
+      <div class="act-frame">
+        <img src="assets/circuit.png" alt="Circuit Training — Derivatives worksheet by Vicki Carter" style="width:100%; height:100%; object-fit:contain; background:#fff; display:block">
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Vicki Carter's paper "Circuit" worksheet (2019). Solve a cell, find your answer elsewhere in the grid, and chain through all 16 problems — self-checking by design. The paper ancestor of the self-checking Doenet activities.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Circuits in Doenet</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/jjYPcPgmNsFZhFaMZR4aZk" title="Circuits in Doenet — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Live demo — Vicki Carter's circuit, rebuilt in Doenet: self-checking, randomized per student, and auto-graded. Swap in the activity link.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Pretzels</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/c2AognHeMyGB5hLGfhF54k" title="Pretzels — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~26:30) Show the distractors. The student who took notes carefully breezes through; the one who didn't gets tangled.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Salty Pretzels</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/mUfRdUX3uT3BgPKzBvL5ya" title="Salty Pretzels — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~26:30) Show the distractors. The student who took notes carefully breezes through; the one who didn't gets tangled.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Factoring Crossword</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/jovn33n9gLe9oZ4BvWXJQa" title="Factoring Crossword — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~28:30) Same factoring reps as a worksheet — but the crossword constraint makes them self-check.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Algebra Food Truck</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/tMHGbautNA1vq77Y5P3b9R" title="Algebra Food Truck — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~29:15) A narrative wrapper around the same skills. Students forget they're drilling.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame claim">
+    <div class="kicker">Belief 16 / 20</div>
+    <h2 class="claim-stmt sm">Students shouldn't have to wait for me to come by and tell them they're on the right path.</h2>
+    <div class="claim-foot"><span class="rule"></span></div>
+  </div>
+  <aside class="notes">(~30:00) Instant feedback isn't about grading — it's about momentum. One instructor can't be at 30 desks at once. The activity can.</aside>
+</section>
+
+<!-- full-bleed: self-driven payoff for belief 16 -->
+<section data-background-image="assets/class-self-driven.jpg" data-background-size="cover" data-background-position="center" data-background-color="#0b0c0d" data-transition="zoom">
+  <div class="frame bottom photo nogrid" style="padding-bottom:88px">
+    <div class="scrim"></div>
+    <div class="kicker coral">On the right path — without me</div>
+    <h2 class="story sm" style="margin-top:20px;max-width:1480px">By the time I reach the table, the activity has <em>already</em> told them they're on track.</h2>
+  </div>
+  <aside class="notes">(~30:20) Photo payoff for the previous belief — students self-correcting, not waiting on me. Then move into Bernard Suits.</aside>
+</section>
+
+<section data-background-color="#0f1013">
+  <div class="frame center">
+    <div class="kicker coral">Belief 17 / 20 · why games work</div>
+    <h2 class="bigquote" style="margin-top:40px"><span class="qm">“</span>Playing a game is the voluntary attempt to overcome <em>unnecessary obstacles.</em><span class="qm">”</span></h2>
+    <div class="attrib">Bernard Suits · <span style="color:var(--fg-soft)">The Grasshopper</span>, 1978</div>
+  </div>
+  <aside class="notes">(~30:45) The intellectual heart of the talk. Suits' definition of a game IS a definition of good homework. Pause here. Then two game demos.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">KenKen</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/braPZjnyNNaxyiANJ2YBr4" title="KenKen — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~32:15) Pure logic puzzle that smuggles in arithmetic fluency. Nobody complains about a KenKen.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">The Last of Us</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/wu4URPjuT1JhekJxMfQdjD" title="The Last of Us — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~33:00) The most game-like of them all. Let one student drive while the room watches.</aside>
+</section>
+
+<!-- ===================== PART 4 — ASSESSMENT ===================== -->
+
+</section>
+
+<section class="stack">
+<section data-background-color="#0b0c0d" data-background-image="assets/class-assessment.jpg" data-background-size="cover" data-background-position="center" data-transition="zoom" data-background-transition="zoom">
+  <div class="frame divider photo nogrid">
+    <div class="scrim"></div>
+    <div class="divnum">04</div>
+    <div class="kicker coral">Part four</div>
+    <h2 class="divtitle">Assessment</h2>
+  </div>
+  <aside class="notes">(~34:00) How you test reveals what you actually value. Three beliefs.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame combo">
+    <div class="kicker">Beliefs 18 – 20 / 20</div>
+    <div class="belief-pair tri">
+      <div class="bp-item">
+        <div class="bp-num">18</div>
+        <div class="bp-body"><h2 class="bp-stmt">Customized assessments beat <em>mass-produced</em> ones.</h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num coral">19</div>
+        <div class="bp-body"><h2 class="bp-stmt">Same test, new numbers, tests <span class="coral">nothing.</span></h2></div>
+      </div>
+      <div class="bp-item">
+        <div class="bp-num">20</div>
+        <div class="bp-body"><h2 class="bp-stmt">Real understanding is using what you know on a <em>semi-novel</em> problem.</h2></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~34:30) The assessment beliefs, alternating: customized beats mass-produced; the same test with new numbers tests nothing (memory, not learning); and real understanding is using what you know on a semi-novel problem — a cousin of what you drilled. Transfer is the only assessment that matters.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">Linear Function FEQ</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://beta.doenet.org/activityViewer/mPzbXj5xGbUQXSux4inFEr" title="Linear Function FEQ — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~36:45) A free-entry question on linear functions — semi-novel, no multiple-choice to game.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Live demo ↪ doenet</div>
+        <h2 style="margin-top:22px">The Compound</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live Doenet activity loads here when online.</div>
+        <iframe src="https://doenet.org/portfolioviewer/_xfwvh5pKZamSmQKU8E3Lz" title="The Compound — live demo" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~37:30) Your capstone assessment. Show how it asks them to apply, not recall.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Paper assessment ✎</div>
+        <h2 style="margin-top:22px">The Farm</h2>
+      </div>
+      <div class="act-frame">
+        <img src="assets/the-farm.png" alt="The Farm — paper assessment worksheet" style="width:100%; height:100%; object-fit:contain; background:#fff; display:block">
+      </div>
+    </div>
+  </div>
+  <aside class="notes">A paper assessment — "The Farm" — not a Doenet activity. Hand it out on paper; swap the right panel for a scan of the worksheet if you want to show it on screen.</aside>
+</section>
+
+<section data-background-color="#131519" data-transition="zoom">
+  <div class="frame nogrid" style="padding:20px 90px">
+    <div class="act-wrap">
+      <div class="act-left">
+        <div class="kicker coral">Standards Based Grading</div>
+        <h2 style="margin-top:22px">Grade Calculator</h2>
+      </div>
+      <div class="act-frame">
+        <div class="ph">Live tool loads here when online.</div>
+        <iframe src="https://anuragkatyal.github.io/SBG-Grade-Calculator/" title="SBG Grade Calculator" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Standards-based grading — a live SBG grade calculator (my own tool). Walk through how a student's standard scores roll up into a final grade.</aside>
+</section>
+
+<!-- ===================== PART 5 — THE PUDDING ===================== -->
+
+</section>
+
+<section class="stack">
+<section data-background-color="#0b0c0d" data-transition="zoom" data-background-transition="zoom">
+  <div class="frame divider">
+    <div class="divnum">05</div>
+    <div class="kicker coral">The proof</div>
+    <h2 class="divtitle">The Pudding</h2>
+    <div class="divmeta">Did any of this actually work?</div>
+  </div>
+  <aside class="notes">(~38:30) Enough philosophy — here's the evidence.</aside>
+</section>
+
+<section data-background-color="#0f1013" data-transition="zoom">
+  <div class="frame center">
+    <div class="kicker">Pass rates · intermediate algebra</div>
+    <div style="display:flex;align-items:flex-end;gap:64px;margin-top:54px;flex-wrap:wrap">
+      <div>
+        <div class="stat-num" style="font-size:150px;color:var(--fg-mute)">35%</div>
+        <div style="font-family:'IBM Plex Mono',monospace;color:var(--fg-mute);font-size:26px;margin-top:8px;letter-spacing:.1em">BEFORE</div>
+      </div>
+      <div class="stat-num" style="font-size:96px;color:var(--coral);padding-bottom:36px">→</div>
+      <div class="fragment fade-up">
+        <div class="stat-num" style="font-size:300px;color:var(--teal)" data-countup="55" data-from="35" data-suffix="%">55%</div>
+        <div style="font-family:'IBM Plex Mono',monospace;color:var(--teal);font-size:30px;margin-top:2px;letter-spacing:.1em">AFTER</div>
+      </div>
+    </div>
+    <p class="support" style="margin-top:50px">Same course, same college — after switching to open, custom-built activities.</p>
+  </div>
+  <aside class="notes">(~38:50) Let 35% sit, then reveal 55%. A twenty-point jump in a gateway course is enormous — say so plainly.</aside>
+</section>
+
+<section data-background-color="#0f1013" data-transition="zoom">
+  <div class="frame center">
+    <div class="kicker coral">It wasn't a fluke</div>
+    <div style="display:flex;align-items:flex-end;gap:50px;margin-top:20px;flex-wrap:wrap">
+      <div class="stat-num" style="font-size:200px;color:var(--fg-mute)">90%</div>
+      <div class="stat-num" style="font-size:108px;color:var(--coral);padding-bottom:42px">→</div>
+      <div class="stat-num" style="font-size:300px;color:var(--coral)" data-countup="94" data-from="90" data-suffix="%">94%</div>
+    </div>
+    <p class="surface-line" style="margin-top:6px;max-width:1500px">follow-through pass rate.</p>
+    <p class="support" style="margin-top:26px;font-family:'IBM Plex Mono',monospace;color:var(--fg-mute);letter-spacing:.04em">independent classrooms</p>
+  </div>
+  <aside class="notes">(~39:40) The replication is the point. One classroom is an anecdote; three is a signal.</aside>
+</section>
+
+<!-- ===================== PART 6 — JOIN US ===================== -->
+
+</section>
+
+<section class="stack">
+<section data-background-color="#0b0c0d" data-transition="zoom" data-background-transition="zoom">
+  <div class="frame divider">
+    <div class="divnum">06</div>
+    <div class="kicker coral">The real talk</div>
+    <h2 class="divtitle">Join Us</h2>
+    <div class="divmeta">Back to what's underneath the surface</div>
+  </div>
+  <aside class="notes">(~40:30) Return to the emotional thesis from the opening. This is the close.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame claim">
+    <div class="kicker coral">One more thing I believe</div>
+    <h2 class="claim-stmt">People who believe in FOSS are, on average, <em>good people.</em></h2>
+    <div class="claim-foot"><span class="rule coral"></span></div>
+  </div>
+  <aside class="notes">(~40:50) Sincere, not saccharine. The people are the reason you stayed.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame claim">
+    <div class="kicker coral">And one thing I've learned</div>
+    <h2 class="claim-stmt">Good acts <em>beget</em> good acts.</h2>
+    <div class="claim-foot"><span class="rule coral"></span></div>
+  </div>
+  <aside class="notes">(~41:30) Callback to the two students on the bus. Trying to fix one unfair thing connected you to a whole community fixing many.</aside>
+</section>
+
+<!-- full-bleed: the community group photo (warm color among the b&w) -->
+<section data-background-image="assets/workshop-group.jpg" data-background-size="cover" data-background-position="center" data-background-color="#0b0c0d" data-transition="zoom">
+  <div class="frame bottom photo nogrid" style="padding-bottom:84px">
+    <div class="scrim"></div>
+    <div class="kicker coral">(A SUBSET OF) THE COMMUNITY</div>
+    <h2 class="story sm" style="margin-top:20px;max-width:1520px">These are the people who showed up to make math <em>free.</em></h2>
+    <p class="support" style="margin-top:20px">Come be in the next photo!</p>
+  </div>
+  <aside class="notes">(~41:50) The group photo from the last workshop — "the community" made literal, and the one burst of color in the deck. Then straight into the invite.</aside>
+</section>
+
+<section data-background-color="#16181c">
+  <div class="frame">
+    <div class="kicker coral">Come build with us</div>
+    <h2 style="font-size:96px;font-weight:700;letter-spacing:-.02em;margin-top:24px;line-height:1.0">Free virtual workshop</h2>
+    <div style="display:flex;gap:72px;margin-top:52px;flex-wrap:wrap;align-items:flex-start">
+      <div>
+        <div style="font-family:'IBM Plex Sans Condensed',sans-serif;font-weight:700;font-size:108px;line-height:.92;color:var(--teal)">Jul 14–17</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:30px;color:var(--fg-soft);margin-top:16px;letter-spacing:.04em">3:00 – 6:00 PM Eastern</div>
+      </div>
+      <p style="font-size:38px;color:var(--fg-soft);max-width:760px;line-height:1.36">Join the growing Doenet community. Bring an idea; leave with an activity you built — and people who'll help you make the next one.</p>
+    </div>
+    <div style="margin-top:auto">
+      <div style="display:flex;align-items:center;gap:40px">
+        <div style="background:#fff;padding:16px;border-radius:16px;line-height:0;flex:none">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=380x380&margin=0&data=https%3A%2F%2Fbeta.doenet.org%2Fevents" alt="QR code — register at beta.doenet.org/events" width="248" height="248" style="display:block">
+        </div>
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:22px;letter-spacing:.2em;text-transform:uppercase;color:var(--coral);margin-bottom:12px">Register</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:30px;color:var(--fg);display:inline-flex;gap:16px;align-items:center;background:rgba(28,26,22,.72);border:1px solid var(--card-line);border-radius:12px;padding:16px 22px"><span style="color:var(--coral)">scan or visit →</span> beta.doenet.org/events</div>
+        </div>
+      </div>
+      <div style="margin-top:34px;border-top:1px solid var(--card-line);padding-top:26px;max-width:1520px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:24px;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin-bottom:10px">Going to be at MathFest?</div>
+        <div style="font-size:30px;color:var(--fg-soft);line-height:1.34">We're running a minicourse — <strong style="color:var(--fg);font-weight:600">"Upgrading Online Assignments: Building Scaffolded Activities for Conceptual Understanding."</strong></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">(~42:00) The ask. Free, three afternoons. Read the dates aloud. Encourage them to register before they leave the room.</aside>
+</section>
+
+</section>
+
+<section data-background-color="#0f1013" data-transition="zoom">
+  <div class="frame center nogrid">
+    <svg class="deco-route" style="bottom:88px;left:130px;width:1660px;height:110px" viewBox="0 0 1660 110" fill="none">
+      <polyline points="0,80 360,80 440,24 980,24 1060,80 1660,80" stroke="rgba(222,202,168,.4)" stroke-width="3"/>
+      <circle cx="0" cy="80" r="8" fill="#f0b54e"/><circle cx="1660" cy="80" r="8" fill="#e9846a"/>
+    </svg>
+    <div class="kicker">Thank you</div>
+    <h1 class="maintitle" style="font-size:104px;margin-top:28px">Tech you <span class="teal">create</span>,<br><span class="teal">modify</span> &amp; <span class="teal">adapt</span>.</h1>
+    <p class="support" style="margin-top:38px;font-size:38px">For two students on a bus — and every student since.</p>
+    <div class="byline" style="margin-top:50px"><span>Anurag Katyal</span><span class="dot"></span><span>Palm Beach State College</span><span class="dot"></span><span>www.PiTimesPi.com</span></div>
+  </div>
+  <aside class="notes">(~43:00) Close on the title and the callback. Leave ~5–7 min for questions. Thank them again, and point to the workshop URL.</aside>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    width: 1920,
+    height: 1080,
+    margin: 0,
+    minScale: 0.2,
+    maxScale: 2.0,
+    center: false,
+    hash: true,
+    controls: true,
+    progress: true,
+    slideNumber: false,
+    transition: 'fade',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    plugins: [ RevealNotes ]
+  });
+</script>
+<script>
+(function(){
+  function fmtMins(m){
+    if(m < 60) return '\u2248 ' + m + 'm';
+    var h=Math.floor(m/60), mm=m%60;
+    return '\u2248 ' + h + 'h ' + (mm<10?'0':'') + mm + 'm';
+  }
+  function countUp(el){
+    if(el.__cu) return; el.__cu=true;
+    var to=parseFloat(el.getAttribute('data-countup'));
+    var from=parseFloat(el.getAttribute('data-from')||'0');
+    var sfx=el.getAttribute('data-suffix')||'';
+    var t0=performance.now(), dur=1100;
+    (function step(t){
+      var p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(from+(to-from)*e)+sfx;
+      if(p<1) requestAnimationFrame(step);
+    })(t0);
+  }
+  function resetCount(el){ el.__cu=false; el.textContent=(el.getAttribute('data-from')||'0')+(el.getAttribute('data-suffix')||''); }
+  function updateCommute(){
+    var legs=document.querySelectorAll('#commute-legs li'); if(!legs.length) return;
+    var total=0, all=0;
+    legs.forEach(function(li){ var m=parseInt(li.getAttribute('data-min'),10)||0; all+=m; if(li.classList.contains('visible')) total+=m; });
+    var big=document.getElementById('commute-big'), fill=document.getElementById('commute-fill');
+    if(big) big.textContent=fmtMins(total);
+    if(fill) fill.style.width=(all?total/all*100:0)+'%';
+  }
+  function wireTimer(chip){
+    if(chip.__w) return; chip.__w=true;
+    var total=420, left=420, running=false, iv=null;
+    function render(){
+      var m=Math.floor(left/60), s=left%60, t=m+':'+(s<10?'0':'')+s;
+      chip.textContent = left<=0 ? "TIME \u2014 0:00" : !running ? (left===total ? 'TIME LIMIT \u00b7 '+t+' \u00b7 tap to start' : t+' \u00b7 paused') : t;
+      chip.classList.toggle('warn', running && left<=60 && left>0);
+      chip.classList.toggle('done', left<=0);
+    }
+    function tick(){ if(left>0){ left--; render(); } else { stop(); } }
+    function start(){ running=true; iv=setInterval(tick,1000); render(); }
+    function stop(){ running=false; if(iv){ clearInterval(iv); iv=null; } render(); }
+    chip.addEventListener('click', function(ev){ ev.stopPropagation(); if(running) stop(); else { if(left<=0) left=total; start(); } });
+    chip.__reset=function(){ stop(); left=total; render(); };
+    render();
+  }
+  var PARTS=['Top-Down','Pre-Class','In Class','Assessment','The Pudding','Join Us'];
+  function buildRail(){
+    if(document.getElementById('part-rail')) return;
+    var r=document.createElement('div'); r.id='part-rail';
+    var c='<div class="pr-cells">'; for(var i=0;i<6;i++) c+='<span></span>'; c+='</div><div class="pr-label"></div>';
+    r.innerHTML=c; document.querySelector('.reveal').appendChild(r);
+  }
+  function currentPart(){
+    var idx=Reveal.getIndices().h, secs=document.querySelectorAll(".reveal > .slides > section"), part=0;
+    for(var i=0;i<=idx && i<secs.length;i++){ if(secs[i].querySelector && secs[i].querySelector('.frame.divider')) part++; }
+    return part;
+  }
+  function updateRail(){
+    var rail=document.getElementById('part-rail'); if(!rail) return;
+    var p=currentPart(), cells=rail.querySelectorAll('.pr-cells span');
+    cells.forEach(function(c,i){ c.className = i===p-1 ? 'active' : (i<p ? 'done' : ''); });
+    rail.classList.toggle('show', p>=1 && p<=6);
+    if(p>=1&&p<=6) rail.querySelector('.pr-label').textContent='PART '+p+' \u00b7 '+PARTS[p-1];
+  }
+  function onSlide(){
+    var pres=document.querySelector('section.present');
+    document.querySelectorAll('[data-countup]').forEach(function(el){
+      if(pres && pres.contains(el)){
+        var f=el.closest('.fragment');
+        if(f && !f.classList.contains('visible')) resetCount(el); else countUp(el);
+      } else resetCount(el);
+    });
+    updateCommute();
+    var chip=document.querySelector('.timer-chip');
+    if(chip && chip.__reset && (!pres || !pres.contains(chip))) chip.__reset();
+    updateRail();
+  }
+  function init(){
+    buildRail();
+    var chip=document.querySelector('.timer-chip'); if(chip) wireTimer(chip);
+    Reveal.on('slidechanged', onSlide);
+    Reveal.on('fragmentshown', function(e){
+      var fr=e.fragment;
+      if(fr.matches && fr.matches('[data-countup]')) countUp(fr);
+      if(fr.querySelectorAll) fr.querySelectorAll('[data-countup]').forEach(countUp);
+      updateCommute();
+    });
+    Reveal.on('fragmenthidden', function(e){
+      var fr=e.fragment;
+      if(fr.matches && fr.matches('[data-countup]')) resetCount(fr);
+      if(fr.querySelectorAll) fr.querySelectorAll('[data-countup]').forEach(resetCount);
+      updateCommute();
+    });
+    onSlide();
+  }
+  if(window.Reveal){ if(Reveal.isReady && Reveal.isReady()) init(); else Reveal.on('ready', init); }
+})();
+</script>
+<script>
+(function(){
+  function build(m){
+    var dots=(m.d||[]).map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(p[2]||5)+'" fill="'+(p[3]||'#f0b54e')+'"/>';}).join('');
+    return '<svg class="deco-auto" viewBox="0 0 200 120" fill="none" style="width:'+m.w+'px;height:'+(m.w*0.6)+'px;'+m.pos+(m.flip?'transform:scaleX(-1);':'')+'"><polyline points="'+m.p+'" stroke="rgba(222,202,168,.45)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+dots+'</svg>';
+  }
+  var MOT=[
+    {p:'6,96 60,96 60,54 120,54 120,18 194,18',d:[[6,96,4],[194,18,5,'#e9846a']]},
+    {p:'6,20 70,20 70,70 140,70 140,104 194,104',d:[[6,20,4],[194,104,5,'#e9846a']]},
+    {p:'6,60 86,60 134,16 134,104',d:[[6,60,4],[134,16,4,'#e9846a'],[134,104,4]]},
+    {p:'6,100 50,100 50,40 92,40 92,100 150,100 150,30 194,30',d:[[194,30,5,'#e9846a']]},
+    {p:'10,28 122,28 162,92 194,92',d:[[10,28,4],[194,92,5,'#e9846a']]},
+    {p:'6,60 60,60 100,18 140,102 194,60',d:[[100,18,4,'#e9846a'],[140,102,4]]},
+    {p:'6,18 110,18 110,102 194,102',d:[[6,18,4],[110,18,4,'#e9846a'],[194,102,4]]},
+    {p:'6,60 194,60',d:[[6,60,4],[68,60,4,'#e9846a'],[130,60,4],[194,60,4,'#e9846a']]},
+    {p:'20,100 20,40 80,40 80,100 140,100 140,40 194,40',d:[[20,40,4,'#e9846a'],[194,40,4]]},
+    {p:'6,90 70,90 110,48 110,90 170,90 170,28 194,28',d:[[110,48,4,'#e9846a'],[194,28,4]]},
+    {p:'6,30 60,30 60,92 122,92 162,50 194,50',d:[[6,30,4],[162,50,4,'#e9846a']]},
+    {p:'10,60 50,20 90,60 130,20 170,60 194,40',d:[[10,60,4],[194,40,4,'#e9846a']]}
+  ];
+  var POS=['top:94px;right:120px;','bottom:92px;right:122px;','top:118px;right:158px;','bottom:112px;right:150px;'];
+  function isText(f){
+    if(!f) return false;
+    if(f.querySelector('.deco-route, .map-wrap, .act-wrap, .stat-num, img, .scrim, .vs, .commute-track')) return false;
+    var c=f.classList;
+    if(c.contains('divider')||c.contains('photo')||c.contains('demo')) return false;
+    return c.contains('claim')||c.contains('combo')||c.contains('center')||!!f.querySelector('.surface-line, .story, .claim-stmt, .bigquote, .belief-pair');
+  }
+  var i=0;
+  document.querySelectorAll('.reveal .slides section').forEach(function(sec){
+    if(sec.querySelector(':scope > section')) return;
+    var f=sec.querySelector('.frame');
+    if(!isText(f)) return;
+    var base=MOT[i % MOT.length];
+    var m={p:base.p,d:base.d,w:300+(i%3)*40,pos:POS[i % POS.length],flip:(Math.floor(i/MOT.length)%2)===1};
+    f.insertAdjacentHTML('afterbegin', build(m));
+    i++;
+  });
+})();
+</script>
+<div id="demo-tweaks" style="position:fixed;top:16px;right:16px;z-index:9999;background:rgba(15,16,19,.96);border:1px solid #2e3036;border-radius:12px;padding:16px 18px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#cdd5de;display:none;width:232px;box-shadow:0 12px 40px rgba(0,0,0,.5)">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><b style="letter-spacing:.12em;color:#f0b54e">DEMO EMBED</b><span id="tw-x" style="cursor:pointer;color:#9a9488">&#10005;</span></div>
+  <div>Embed height &middot; <span id="tw-hv"></span>px</div>
+  <input id="tw-h" type="range" min="600" max="1040" step="10" style="width:100%;accent-color:#f0b54e">
+  <div style="margin-top:12px">Text column &middot; <span id="tw-wv"></span>px</div>
+  <input id="tw-w" type="range" min="300" max="620" step="10" style="width:100%;accent-color:#f0b54e">
+  <div style="margin-top:12px;color:#6f7a88;font-size:11px">press T to show / hide</div>
+</div>
+<script>
+(function(){
+  var R=document.querySelector('.reveal'),P=document.getElementById('demo-tweaks');
+  var h=document.getElementById('tw-h'),w=document.getElementById('tw-w'),hv=document.getElementById('tw-hv'),wv=document.getElementById('tw-wv');
+  h.value=1010;w.value=440;
+  function u(){R.style.setProperty('--embed-h',h.value+'px');R.style.setProperty('--demo-text-w',w.value+'px');hv.textContent=h.value;wv.textContent=w.value;}
+  h.oninput=u;w.oninput=u;u();
+  document.getElementById('tw-x').onclick=function(){P.style.display='none';};
+  document.addEventListener('keydown',function(e){var tag=(e.target&&e.target.tagName)||'';if((e.key==='t'||e.key==='T')&&!/INPUT|TEXTAREA/.test(tag)){P.style.display=P.style.display==='none'?'block':'none';}});
+})();
+</script>
+<style>.deco-auto,.deco-route{opacity:var(--deco-op,.85) !important}</style>
+<div id="feel" style="position:fixed;top:16px;left:16px;z-index:9999;background:rgba(15,16,19,.96);border:1px solid #2e3036;border-radius:12px;padding:16px 18px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#cdd5de;display:none;width:250px;box-shadow:0 12px 40px rgba(0,0,0,.5)">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><b style="letter-spacing:.14em;color:#f0b54e">FEEL</b><span id="fl-x" style="cursor:pointer;color:#9a9488">&#10005;</span></div>
+  <div style="margin-bottom:7px;color:#9a9488">Accent mood</div>
+  <div id="fl-acc" style="display:flex;gap:6px;margin-bottom:15px"><button data-a="amber">Amber</button><button data-a="teal">Teal</button><button data-a="coral">Coral</button></div>
+  <div>Atmosphere &middot; <span id="fl-av"></span></div>
+  <input id="fl-atmos" type="range" min="0" max="100" value="30" style="width:100%;accent-color:#f0b54e">
+  <div style="margin-top:13px">Air &amp; space &middot; <span id="fl-rv"></span></div>
+  <input id="fl-air" type="range" min="0" max="100" value="40" style="width:100%;accent-color:#f0b54e">
+  <div style="margin-top:13px;color:#6f7a88;font-size:11px">press F to show / hide</div>
+</div>
+<script>
+(function(){
+  var R=document.querySelector('.reveal'),P=document.getElementById('feel');
+  var ACC={amber:['#f0b54e','#e9846a'],teal:['#34d4bf','#6aa8ff'],coral:['#fb7185','#f3c060']};
+  function setAcc(k){var a=ACC[k];R.style.setProperty('--teal',a[0]);R.style.setProperty('--coral',a[1]);[].forEach.call(document.querySelectorAll('#fl-acc button'),function(b){b.style.background=b.getAttribute('data-a')===k?'#3a3c42':'transparent';});}
+  var atmos=document.getElementById('fl-atmos'),av=document.getElementById('fl-av');
+  function setAtmos(){var v=+atmos.value/100;R.style.setProperty('--ink-line','rgba(222,202,168,'+(0.035+v*0.17).toFixed(3)+')');R.style.setProperty('--ink-line-strong','rgba(222,202,168,'+(0.07+v*0.23).toFixed(3)+')');R.style.setProperty('--deco-op',(0.55+v*0.45).toFixed(2));av.textContent=atmos.value;}
+  var air=document.getElementById('fl-air'),rv=document.getElementById('fl-rv');
+  function setAir(){var v=+air.value/100;R.style.setProperty('--pad-x',Math.round(72+v*150)+'px');R.style.setProperty('--pad-top',Math.round(56+v*94)+'px');R.style.setProperty('--pad-bottom',Math.round(56+v*94)+'px');rv.textContent=air.value;}
+  [].forEach.call(document.querySelectorAll('#fl-acc button'),function(b){b.style.cssText='flex:1;padding:7px 0;border:1px solid #3a3c42;border-radius:7px;background:transparent;color:#cdd5de;font-family:inherit;font-size:12px;cursor:pointer';b.onclick=function(){setAcc(b.getAttribute('data-a'));};});
+  atmos.oninput=setAtmos;air.oninput=setAir;
+  setAcc('amber');av.textContent=atmos.value;rv.textContent=air.value;
+  document.getElementById('fl-x').onclick=function(){P.style.display='none';};
+  document.addEventListener('keydown',function(e){var t=(e.target&&e.target.tagName)||'';if((e.key==='f'||e.key==='F')&&!/INPUT|TEXTAREA|BUTTON/.test(t)){P.style.display=P.style.display==='none'?'block':'none';}});
+})();
+</script>
+<script>
+(function(){
+  function run(slide){ if(!slide) return; slide.querySelectorAll('[data-autolist]').forEach(function(ul){ ul.querySelectorAll('li').forEach(function(li,i){ clearTimeout(li.__t); li.classList.remove('in'); li.__t=setTimeout(function(){ li.classList.add('in'); }, 600 + i*1000); }); }); }
+  function reset(slide){ if(!slide) return; slide.querySelectorAll('[data-autolist] li').forEach(function(li){ clearTimeout(li.__t); li.classList.remove('in'); }); }
+  if(window.Reveal){ Reveal.on('slidechanged', function(e){ reset(e.previousSlide); run(e.currentSlide); }); Reveal.on('ready', function(e){ run(e.currentSlide); }); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doenet Talk — Color Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#0a0b0d; color:#e9edf2; font-family:"IBM Plex Sans",system-ui,sans-serif; padding:64px 56px 96px; -webkit-font-smoothing:antialiased; }
+  .head{ max-width:1320px; margin:0 auto 48px; }
+  .head .eyebrow{ font-family:"IBM Plex Mono",monospace; font-size:14px; letter-spacing:.32em; text-transform:uppercase; color:#6f7a88; }
+  .head h1{ font-size:42px; font-weight:700; letter-spacing:-.02em; margin-top:14px; }
+  .head p{ font-size:19px; color:#97a1ad; margin-top:14px; max-width:760px; line-height:1.5; }
+  .head .hint{ font-family:"IBM Plex Mono",monospace; font-size:14px; color:#6f7a88; margin-top:18px; }
+
+  .grid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:40px; max-width:1320px; margin:0 auto; }
+  @media (max-width:1200px){ .grid{ grid-template-columns:1fr; } }
+
+  .card{ background:#101216; border:1px solid #1d2127; border-radius:18px; overflow:hidden; }
+  .card-top{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:22px 26px 18px; }
+  .card-name{ font-size:24px; font-weight:700; letter-spacing:-.01em; }
+  .card-vibe{ font-family:"IBM Plex Mono",monospace; font-size:13px; color:#7c8794; letter-spacing:.04em; text-align:right; }
+
+  .samp-wrap{ width:100%; aspect-ratio:16/9; overflow:hidden; position:relative; border-top:1px solid #1d2127; border-bottom:1px solid #1d2127; }
+  .samp{ position:absolute; top:0; left:0; width:1280px; height:720px; transform-origin:top left; }
+  /* scale 1280 -> card inner width; set via JS for precision, fallback below */
+  .samp-inner{ position:absolute; inset:0; background:var(--bg); overflow:hidden; padding:96px 104px; display:flex; flex-direction:column; }
+  .samp-inner::before{ content:""; position:absolute; inset:0; background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px); background-size:72px 72px; -webkit-mask-image:radial-gradient(120% 120% at 72% 28%,#000 52%,transparent 100%); mask-image:radial-gradient(120% 120% at 72% 28%,#000 52%,transparent 100%); }
+  .samp-route{ position:absolute; top:96px; right:104px; width:360px; height:150px; opacity:.55; }
+  .samp-inner > *{ position:relative; }
+
+  .s-kick{ font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:23px; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:18px; }
+  .s-kick .bar{ width:46px; height:3px; background:var(--accent); display:inline-block; }
+  .s-h{ font-size:88px; font-weight:600; line-height:1.05; letter-spacing:-.02em; color:var(--fg); margin-top:auto; max-width:980px; }
+  .s-h em{ font-style:normal; color:var(--accent); }
+  .s-sub{ font-size:32px; color:var(--mute); margin-top:30px; max-width:820px; line-height:1.4; }
+  .s-rule{ width:104px; height:6px; border-radius:3px; background:var(--accent); margin-top:40px; }
+  .s-foot{ display:flex; align-items:flex-end; gap:36px; margin-top:auto; }
+  .s-stat{ font-family:"IBM Plex Sans Condensed",sans-serif; font-weight:700; font-size:148px; line-height:.82; letter-spacing:-.03em; color:var(--accent2); }
+  .s-mono{ font-family:"IBM Plex Mono",monospace; font-size:24px; letter-spacing:.12em; color:var(--mute); padding-bottom:14px; }
+  .s-mono b{ color:var(--accent2); font-weight:500; }
+
+  .swatches{ display:flex; gap:0; }
+  .sw{ flex:1; padding:16px 18px 18px; }
+  .sw .chip{ width:30px; height:30px; border-radius:7px; border:1px solid rgba(255,255,255,.14); }
+  .sw .hex{ font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:#8b95a1; margin-top:10px; letter-spacing:.03em; }
+  .sw .lab{ font-family:"IBM Plex Mono",monospace; font-size:11px; color:#5f6975; margin-top:3px; text-transform:uppercase; letter-spacing:.12em; }
+
+  .foot-note{ max-width:1320px; margin:46px auto 0; font-size:16px; color:#7c8794; line-height:1.55; }
+  .foot-note b{ color:#cdd5de; font-weight:600; }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="eyebrow">Doenet talk · color directions</div>
+    <h1>Six dark palettes for the same deck</h1>
+    <p>Every option keeps the structure you have — IBM Plex type, the graph-paper grid, the route motif, the black-and-white classroom photos. Only the background tone and the two accent colors change. The black-and-white photos sit happily on all of them.</p>
+    <div class="hint">#01 is what you have now. Tell me a number to apply it — or mix (e.g. “#3 background with #2 accents”).</div>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <!-- 01 current -->
+    <div class="card" style="--bg:#0d1626;--bg2:#091020;--accent:#34d4bf;--accent2:#fb7185;--grid:rgba(125,165,225,.08);--fg:#eaf0fa;--mute:#8094b4">
+      <div class="card-top"><div class="card-name">01 · Graph &amp; Ink</div><div class="card-vibe">current · cool, plotted, precise</div></div>
+      <div class="samp-wrap"><div class="samp"><div class="samp-inner">
+        <svg class="samp-route" viewBox="0 0 360 150" fill="none"><polyline points="6,120 110,120 150,40 250,40 290,120 354,120" stroke="var(--accent)" stroke-width="3" opacity=".5"/><circle cx="6" cy="120" r="7" fill="var(--accent)"/><circle cx="354" cy="120" r="7" fill="var(--accent2)"/></svg>
+        <div class="s-kick"><span class="bar"></span>Belief 03 / 20</div>
+        <h2 class="s-h">Productive struggle is <em>good.</em></h2>
+        <p class="s-sub">The struggle isn't in the way of the work — it is the work.</p>
+        <div class="s-rule"></div>
+        <div class="s-foot"><div class="s-stat">55%</div><div class="s-mono">PASS RATE · <b>AFTER</b></div></div>
+      </div></div></div>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#0d1626"></div><div class="hex">#0D1626</div><div class="lab">base</div></div>
+        <div class="sw"><div class="chip" style="background:#34d4bf"></div><div class="hex">#34D4BF</div><div class="lab">accent</div></div>
+        <div class="sw"><div class="chip" style="background:#fb7185"></div><div class="hex">#FB7185</div><div class="lab">accent 2</div></div>
+        <div class="sw"><div class="chip" style="background:#eaf0fa"></div><div class="hex">#EAF0FA</div><div class="lab">text</div></div>
+      </div>
+    </div>
+
+    <!-- 02 slate & amber -->
+    <div class="card" style="--bg:#16181c;--bg2:#0f1013;--accent:#f0b54e;--accent2:#e9846a;--grid:rgba(220,200,170,.07);--fg:#f1ece3;--mute:#9a9488">
+      <div class="card-top"><div class="card-name">02 · Slate &amp; Amber</div><div class="card-vibe">warm · chalkboard, academic</div></div>
+      <div class="samp-wrap"><div class="samp"><div class="samp-inner">
+        <svg class="samp-route" viewBox="0 0 360 150" fill="none"><polyline points="6,120 110,120 150,40 250,40 290,120 354,120" stroke="var(--accent)" stroke-width="3" opacity=".5"/><circle cx="6" cy="120" r="7" fill="var(--accent)"/><circle cx="354" cy="120" r="7" fill="var(--accent2)"/></svg>
+        <div class="s-kick"><span class="bar"></span>Belief 03 / 20</div>
+        <h2 class="s-h">Productive struggle is <em>good.</em></h2>
+        <p class="s-sub">The struggle isn't in the way of the work — it is the work.</p>
+        <div class="s-rule"></div>
+        <div class="s-foot"><div class="s-stat">55%</div><div class="s-mono">PASS RATE · <b>AFTER</b></div></div>
+      </div></div></div>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#16181c"></div><div class="hex">#16181C</div><div class="lab">base</div></div>
+        <div class="sw"><div class="chip" style="background:#f0b54e"></div><div class="hex">#F0B54E</div><div class="lab">accent</div></div>
+        <div class="sw"><div class="chip" style="background:#e9846a"></div><div class="hex">#E9846A</div><div class="lab">accent 2</div></div>
+        <div class="sw"><div class="chip" style="background:#f1ece3"></div><div class="hex">#F1ECE3</div><div class="lab">text</div></div>
+      </div>
+    </div>
+
+    <!-- 03 indigo & violet -->
+    <div class="card" style="--bg:#0f1020;--bg2:#0a0a18;--accent:#a78bfa;--accent2:#38bdf8;--grid:rgba(150,150,230,.08);--fg:#eceefc;--mute:#8a8cb0">
+      <div class="card-top"><div class="card-name">03 · Indigo &amp; Violet</div><div class="card-vibe">cool · modern, conference-stage</div></div>
+      <div class="samp-wrap"><div class="samp"><div class="samp-inner">
+        <svg class="samp-route" viewBox="0 0 360 150" fill="none"><polyline points="6,120 110,120 150,40 250,40 290,120 354,120" stroke="var(--accent)" stroke-width="3" opacity=".5"/><circle cx="6" cy="120" r="7" fill="var(--accent)"/><circle cx="354" cy="120" r="7" fill="var(--accent2)"/></svg>
+        <div class="s-kick"><span class="bar"></span>Belief 03 / 20</div>
+        <h2 class="s-h">Productive struggle is <em>good.</em></h2>
+        <p class="s-sub">The struggle isn't in the way of the work — it is the work.</p>
+        <div class="s-rule"></div>
+        <div class="s-foot"><div class="s-stat">55%</div><div class="s-mono">PASS RATE · <b>AFTER</b></div></div>
+      </div></div></div>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#0f1020"></div><div class="hex">#0F1020</div><div class="lab">base</div></div>
+        <div class="sw"><div class="chip" style="background:#a78bfa"></div><div class="hex">#A78BFA</div><div class="lab">accent</div></div>
+        <div class="sw"><div class="chip" style="background:#38bdf8"></div><div class="hex">#38BDF8</div><div class="lab">accent 2</div></div>
+        <div class="sw"><div class="chip" style="background:#eceefc"></div><div class="hex">#ECEEFC</div><div class="lab">text</div></div>
+      </div>
+    </div>
+
+    <!-- 04 forest terminal -->
+    <div class="card" style="--bg:#0b130f;--bg2:#07100b;--accent:#34d399;--accent2:#c0e860;--grid:rgba(120,200,150,.07);--fg:#e6f0e9;--mute:#84a193">
+      <div class="card-top"><div class="card-name">04 · Forest Terminal</div><div class="card-vibe">FOSS · open-source, hacker-warm</div></div>
+      <div class="samp-wrap"><div class="samp"><div class="samp-inner">
+        <svg class="samp-route" viewBox="0 0 360 150" fill="none"><polyline points="6,120 110,120 150,40 250,40 290,120 354,120" stroke="var(--accent)" stroke-width="3" opacity=".5"/><circle cx="6" cy="120" r="7" fill="var(--accent)"/><circle cx="354" cy="120" r="7" fill="var(--accent2)"/></svg>
+        <div class="s-kick"><span class="bar"></span>Belief 03 / 20</div>
+        <h2 class="s-h">Productive struggle is <em>good.</em></h2>
+        <p class="s-sub">The struggle isn't in the way of the work — it is the work.</p>
+        <div class="s-rule"></div>
+        <div class="s-foot"><div class="s-stat">55%</div><div class="s-mono">PASS RATE · <b>AFTER</b></div></div>
+      </div></div></div>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#0b130f"></div><div class="hex">#0B130F</div><div class="lab">base</div></div>
+        <div class="sw"><div class="chip" style="background:#34d399"></div><div class="hex">#34D399</div><div class="lab">accent</div></div>
+        <div class="sw"><div class="chip" style="background:#c0e860"></div><div class="hex">#C0E860</div><div class="lab">accent 2</div></div>
+        <div class="sw"><div class="chip" style="background:#e6f0e9"></div><div class="hex">#E6F0E9</div><div class="lab">text</div></div>
+      </div>
+    </div>
+
+    <!-- 05 oxblood & gold -->
+    <div class="card" style="--bg:#161012;--bg2:#0e0a0b;--accent:#fb7185;--accent2:#f3c060;--grid:rgba(220,160,160,.06);--fg:#f3e9ea;--mute:#a3898d">
+      <div class="card-top"><div class="card-name">05 · Oxblood &amp; Gold</div><div class="card-vibe">bold · warm, dramatic</div></div>
+      <div class="samp-wrap"><div class="samp"><div class="samp-inner">
+        <svg class="samp-route" viewBox="0 0 360 150" fill="none"><polyline points="6,120 110,120 150,40 250,40 290,120 354,120" stroke="var(--accent)" stroke-width="3" opacity=".5"/><circle cx="6" cy="120" r="7" fill="var(--accent)"/><circle cx="354" cy="120" r="7" fill="var(--accent2)"/></svg>
+        <div class="s-kick"><span class="bar"></span>Belief 03 / 20</div>
+        <h2 class="s-h">Productive struggle is <em>good.</em></h2>
+        <p class="s-sub">The struggle isn't in the way of the work — it is the work.</p>
+        <div class="s-rule"></div>
+        <div class="s-foot"><div class="s-stat">55%</div><div class="s-mono">PASS RATE · <b>AFTER</b></div></div>
+      </div></div></div>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#161012"></div><div class="hex">#161012</div><div class="lab">base</div></div>
+        <div class="sw"><div class="chip" style="background:#fb7185"></div><div class="hex">#FB7185</div><div class="lab">accent</div></div>
+        <div class="sw"><div class="chip" style="background:#f3c060"></div><div class="hex">#F3C060</div><div class="lab">accent 2</div></div>
+        <div class="sw"><div class="chip" style="background:#f3e9ea"></div><div class="hex">#F3E9EA</div><div class="lab">text</div></div>
+      </div>
+    </div>
+
+    <!-- 06 steel mono -->
+    <div class="card" style="--bg:#14161a;--bg2:#0e1013;--accent:#6aa8ff;--accent2:#9fb4cc;--grid:rgba(150,170,200,.07);--fg:#eef1f5;--mute:#8a93a3">
+      <div class="card-top"><div class="card-name">06 · Steel Mono</div><div class="card-vibe">minimal · one accent, restrained</div></div>
+      <div class="samp-wrap"><div class="samp"><div class="samp-inner">
+        <svg class="samp-route" viewBox="0 0 360 150" fill="none"><polyline points="6,120 110,120 150,40 250,40 290,120 354,120" stroke="var(--accent)" stroke-width="3" opacity=".5"/><circle cx="6" cy="120" r="7" fill="var(--accent)"/><circle cx="354" cy="120" r="7" fill="var(--accent2)"/></svg>
+        <div class="s-kick"><span class="bar"></span>Belief 03 / 20</div>
+        <h2 class="s-h">Productive struggle is <em>good.</em></h2>
+        <p class="s-sub">The struggle isn't in the way of the work — it is the work.</p>
+        <div class="s-rule"></div>
+        <div class="s-foot"><div class="s-stat">55%</div><div class="s-mono">PASS RATE · <b>AFTER</b></div></div>
+      </div></div></div>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#14161a"></div><div class="hex">#14161A</div><div class="lab">base</div></div>
+        <div class="sw"><div class="chip" style="background:#6aa8ff"></div><div class="hex">#6AA8FF</div><div class="lab">accent</div></div>
+        <div class="sw"><div class="chip" style="background:#9fb4cc"></div><div class="hex">#9FB4CC</div><div class="lab">accent 2</div></div>
+        <div class="sw"><div class="chip" style="background:#eef1f5"></div><div class="hex">#EEF1F5</div><div class="lab">text</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot-note">
+    <b>How to read these:</b> each tile is one real slide from your deck. The accent shows up on the kicker bar, the highlighted word, and the rule; the second accent carries the big number and end-of-route dot — exactly how the deck uses them. Pick a number and I'll reskin all 60 slides in a couple of minutes; the layout, motion, photos, and text stay exactly as they are.
+  </div>
+
+  <script>
+    // Scale each 1280x720 sampler to fit its card width precisely.
+    function fit(){
+      document.querySelectorAll('.samp-wrap').forEach(function(w){
+        var s = w.querySelector('.samp');
+        var k = w.clientWidth / 1280;
+        s.style.transform = 'scale(' + k + ')';
+        w.style.height = (720 * k) + 'px';
+      });
+    }
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+    fit();
+  </script>
+</body>
+</html>

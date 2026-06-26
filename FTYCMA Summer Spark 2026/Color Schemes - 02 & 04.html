@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doenet Talk — 02 &amp; 04 across slide types</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#0a0b0d; color:#e9edf2; font-family:"IBM Plex Sans",system-ui,sans-serif; padding:60px 56px 96px; -webkit-font-smoothing:antialiased; }
+  .head{ max-width:1320px; margin:0 auto 40px; }
+  .head .eyebrow{ font-family:"IBM Plex Mono",monospace; font-size:14px; letter-spacing:.32em; text-transform:uppercase; color:#6f7a88; }
+  .head h1{ font-size:40px; font-weight:700; letter-spacing:-.02em; margin-top:14px; }
+  .head p{ font-size:18px; color:#97a1ad; margin-top:14px; max-width:820px; line-height:1.5; }
+
+  .cmp{ max-width:1320px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:26px 34px; align-items:start; }
+  @media (max-width:1100px){ .cmp{ grid-template-columns:1fr; } }
+  .colhead{ position:sticky; top:0; background:#0a0b0d; padding:8px 0 14px; z-index:5; }
+  .colhead .nm{ font-size:23px; font-weight:700; }
+  .colhead .vibe{ font-family:"IBM Plex Mono",monospace; font-size:13px; color:#7c8794; margin-top:4px; letter-spacing:.04em; }
+  .colhead .sw{ display:flex; gap:7px; margin-top:12px; }
+  .colhead .sw span{ width:24px; height:24px; border-radius:6px; border:1px solid rgba(255,255,255,.14); }
+
+  .rowlabel{ grid-column:1 / -1; font-family:"IBM Plex Mono",monospace; font-size:12.5px; letter-spacing:.22em; text-transform:uppercase; color:#5f6975; padding:14px 0 2px; border-top:1px solid #181b20; }
+
+  .samp-wrap{ width:100%; aspect-ratio:16/9; overflow:hidden; position:relative; border-radius:12px; border:1px solid #1d2127; }
+  .samp{ position:absolute; top:0; left:0; width:1280px; height:720px; transform-origin:top left; }
+  .si{ position:absolute; inset:0; background:var(--bg); overflow:hidden; padding:92px 100px; display:flex; flex-direction:column; }
+  .si.deep{ background:var(--bg2); }
+  .si.center{ justify-content:center; }
+  .si.end{ justify-content:flex-end; }
+  .si::before{ content:""; position:absolute; inset:0; background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px); background-size:72px 72px; -webkit-mask-image:radial-gradient(120% 120% at 72% 28%,#000 52%,transparent 100%); mask-image:radial-gradient(120% 120% at 72% 28%,#000 52%,transparent 100%); }
+  .si.nogrid::before{ display:none; }
+  .si > *{ position:relative; }
+
+  .kick{ font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:23px; letter-spacing:.26em; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:18px; }
+  .kick .bar{ width:46px; height:3px; background:var(--accent); display:inline-block; }
+  .kick.alt{ color:var(--accent2); }
+  .kick.alt .bar{ background:var(--accent2); }
+
+  /* title */
+  .pretitle{ font-family:"IBM Plex Mono",monospace; font-size:28px; letter-spacing:.4em; text-transform:uppercase; color:var(--accent2); margin-bottom:28px; }
+  .maintitle{ font-size:96px; font-weight:700; letter-spacing:-.03em; line-height:1.0; color:var(--fg); }
+  .maintitle em{ font-style:normal; color:var(--accent); }
+  .subtitle{ font-size:36px; color:var(--mute); margin-top:28px; }
+  .byline{ font-family:"IBM Plex Mono",monospace; font-size:24px; color:var(--mute); margin-top:54px; letter-spacing:.05em; }
+
+  /* divider */
+  .divnum{ font-family:"IBM Plex Sans Condensed",sans-serif; font-weight:700; font-size:248px; line-height:.84; letter-spacing:-.02em; position:absolute; top:54px; right:100px; color:color-mix(in srgb, var(--accent) 17%, transparent); }
+  .divtitle{ font-size:148px; font-weight:700; letter-spacing:-.025em; line-height:.98; color:var(--fg); }
+  .divmeta{ font-family:"IBM Plex Mono",monospace; color:var(--mute); font-size:26px; margin-top:26px; letter-spacing:.04em; }
+
+  /* claim */
+  .clm{ font-size:88px; font-weight:600; line-height:1.05; letter-spacing:-.02em; color:var(--fg); }
+  .clm em{ font-style:normal; color:var(--accent); }
+  .sub{ font-size:32px; color:var(--mute); margin-top:30px; max-width:820px; line-height:1.4; }
+  .rule{ width:104px; height:6px; border-radius:3px; background:var(--accent); margin-top:38px; }
+
+  /* stat */
+  .statrow{ display:flex; align-items:flex-end; gap:46px; margin-top:46px; }
+  .before{ font-family:"IBM Plex Sans Condensed",sans-serif; font-weight:700; font-size:138px; line-height:.82; color:var(--mute); letter-spacing:-.03em; }
+  .arrow{ font-family:"IBM Plex Sans Condensed",sans-serif; font-weight:700; font-size:84px; color:var(--accent2); padding-bottom:30px; }
+  .after{ font-family:"IBM Plex Sans Condensed",sans-serif; font-weight:700; font-size:268px; line-height:.78; color:var(--accent); letter-spacing:-.03em; }
+
+  /* quote */
+  .bigq{ font-size:64px; font-weight:600; line-height:1.12; letter-spacing:-.02em; color:var(--fg); max-width:1040px; }
+  .bigq em{ font-style:normal; color:var(--accent); }
+  .bigq .qm{ color:var(--accent2); }
+  .attrib{ font-family:"IBM Plex Mono",monospace; color:var(--mute); font-size:24px; margin-top:40px; letter-spacing:.06em; }
+
+  .route{ position:absolute; opacity:.5; }
+
+  .p2{ --bg:#16181c; --bg2:#0f1013; --accent:#f0b54e; --accent2:#e9846a; --grid:rgba(220,200,170,.08); --fg:#f1ece3; --mute:#9a9488; }
+  .p4{ --bg:#0b130f; --bg2:#07100b; --accent:#34d399; --accent2:#c0e860; --grid:rgba(120,200,150,.08); --fg:#e6f0e9; --mute:#84a193; }
+
+  .note{ max-width:1320px; margin:42px auto 0; font-size:16px; color:#7c8794; line-height:1.55; }
+  .note b{ color:#cdd5de; }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="eyebrow">Doenet talk · a closer look</div>
+    <h1>02 · Slate &amp; Amber &nbsp;vs&nbsp; 04 · Forest Terminal</h1>
+    <p>The same four slide types from your deck, in both palettes — title, a section divider, the pass-rate stat, and the Bernard Suits quote. Section dividers also carry a black-and-white classroom photo in the real deck; shown here without, so you can read the color.</p>
+  </div>
+
+  <div class="cmp">
+    <div class="colhead">
+      <div class="nm">02 · Slate &amp; Amber</div>
+      <div class="vibe">warm · chalkboard, academic</div>
+      <div class="sw"><span style="background:#16181c"></span><span style="background:#f0b54e"></span><span style="background:#e9846a"></span><span style="background:#f1ece3"></span></div>
+    </div>
+    <div class="colhead">
+      <div class="nm">04 · Forest Terminal</div>
+      <div class="vibe">FOSS · open-source, hacker-warm</div>
+      <div class="sw"><span style="background:#0b130f"></span><span style="background:#34d399"></span><span style="background:#c0e860"></span><span style="background:#e6f0e9"></span></div>
+    </div>
+
+    <!-- ============ TITLE ============ -->
+    <div class="rowlabel">Title</div>
+    <div class="samp-wrap p2"><div class="samp"><div class="si center nogrid">
+      <svg class="route" style="bottom:80px;left:100px;width:1080px;height:90px" viewBox="0 0 1080 90" fill="none"><polyline points="0,70 200,70 260,18 520,18 580,70 1080,70" stroke="var(--accent)" stroke-width="3" opacity=".45"/><circle cx="0" cy="70" r="7" fill="var(--accent)"/><circle cx="1080" cy="70" r="7" fill="var(--accent2)"/></svg>
+      <div class="pretitle">Finally,</div>
+      <div class="maintitle">Tech You <em>Create</em>,<br><em>Modify</em> &amp; <em>Adapt</em></div>
+      <div class="subtitle">Free, open-source math activities with Doenet</div>
+      <div class="byline">PALM BEACH STATE COLLEGE · DOENET.ORG</div>
+    </div></div></div>
+    <div class="samp-wrap p4"><div class="samp"><div class="si center nogrid">
+      <svg class="route" style="bottom:80px;left:100px;width:1080px;height:90px" viewBox="0 0 1080 90" fill="none"><polyline points="0,70 200,70 260,18 520,18 580,70 1080,70" stroke="var(--accent)" stroke-width="3" opacity=".45"/><circle cx="0" cy="70" r="7" fill="var(--accent)"/><circle cx="1080" cy="70" r="7" fill="var(--accent2)"/></svg>
+      <div class="pretitle">Finally,</div>
+      <div class="maintitle">Tech You <em>Create</em>,<br><em>Modify</em> &amp; <em>Adapt</em></div>
+      <div class="subtitle">Free, open-source math activities with Doenet</div>
+      <div class="byline">PALM BEACH STATE COLLEGE · DOENET.ORG</div>
+    </div></div></div>
+
+    <!-- ============ DIVIDER ============ -->
+    <div class="rowlabel">Section divider</div>
+    <div class="samp-wrap p2"><div class="samp"><div class="si deep end nogrid">
+      <div class="divnum">03</div>
+      <div class="kick alt">Part three</div>
+      <div class="divtitle">In Class</div>
+      <div class="divmeta">Seven beliefs · in the room</div>
+    </div></div></div>
+    <div class="samp-wrap p4"><div class="samp"><div class="si deep end nogrid">
+      <div class="divnum">03</div>
+      <div class="kick alt">Part three</div>
+      <div class="divtitle">In Class</div>
+      <div class="divmeta">Seven beliefs · in the room</div>
+    </div></div></div>
+
+    <!-- ============ STAT ============ -->
+    <div class="rowlabel">The pass-rate stat</div>
+    <div class="samp-wrap p2"><div class="samp"><div class="si deep center">
+      <div class="kick">Pass rates · intermediate algebra</div>
+      <div class="statrow"><span class="before">35%</span><span class="arrow">→</span><span class="after">55%</span></div>
+      <div class="sub">Same course, same college — after open, custom-built activities.</div>
+    </div></div></div>
+    <div class="samp-wrap p4"><div class="samp"><div class="si deep center">
+      <div class="kick">Pass rates · intermediate algebra</div>
+      <div class="statrow"><span class="before">35%</span><span class="arrow">→</span><span class="after">55%</span></div>
+      <div class="sub">Same course, same college — after open, custom-built activities.</div>
+    </div></div></div>
+
+    <!-- ============ QUOTE ============ -->
+    <div class="rowlabel">The Bernard Suits quote</div>
+    <div class="samp-wrap p2"><div class="samp"><div class="si deep center">
+      <div class="kick alt">Belief 17 · why games work</div>
+      <div class="bigq" style="margin-top:34px"><span class="qm">“</span>Playing a game is the voluntary attempt to overcome <em>unnecessary obstacles.</em><span class="qm">”</span></div>
+      <div class="attrib">BERNARD SUITS · THE GRASSHOPPER, 1978</div>
+    </div></div></div>
+    <div class="samp-wrap p4"><div class="samp"><div class="si deep center">
+      <div class="kick alt">Belief 17 · why games work</div>
+      <div class="bigq" style="margin-top:34px"><span class="qm">“</span>Playing a game is the voluntary attempt to overcome <em>unnecessary obstacles.</em><span class="qm">”</span></div>
+      <div class="attrib">BERNARD SUITS · THE GRASSHOPPER, 1978</div>
+    </div></div></div>
+
+  </div>
+
+  <div class="note"><b>Still your deck.</b> Same layout, motion, photos, and copy — only the three colors change. Say the word (a number, or "go with 04") and I'll reskin all 60 slides.</div>
+
+  <script>
+    function fit(){
+      document.querySelectorAll('.samp-wrap').forEach(function(w){
+        var s = w.querySelector('.samp');
+        var k = w.clientWidth / 1280;
+        s.style.transform = 'scale(' + k + ')';
+      });
+    }
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+    fit();
+  </script>
+</body>
+</html>
